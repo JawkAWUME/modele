@@ -1,0 +1,261 @@
+<!-- Curseur -->
+<div id="cursor" class="cursor"></div>
+<div id="cursorRing" class="cursor-ring"></div>
+
+<!-- PANIER LATERAL -->
+<div class="cart-panel" [class.open]="cartPanelOpen">
+    <div class="cart-header">
+        <h3>Votre panier</h3>
+        <button (click)="toggleCart(false)" style="background:none;border:none;font-size:1.5rem;cursor:none;">&times;</button>
+    </div>
+    <div class="cart-items">
+        @for (item of cart; track item.id) {
+        <div class="cart-item">
+            <div class="cart-item-img" [style.background]="'url(' + item.img + ') center/cover'"></div>
+            <div class="cart-item-details">
+                <strong>{{ item.name }}</strong>
+                <div>{{ item.price }}€ x {{ item.quantity }}</div>
+                <div style="display:flex;gap:8px;margin-top:6px;">
+                    <button (click)="updateQuantity(item.id, -1)" style="background:var(--gray-light);border:none;padding:2px 8px;border-radius:4px;">−</button>
+                    <button (click)="updateQuantity(item.id, 1)" style="background:var(--gray-light);border:none;padding:2px 8px;border-radius:4px;">+</button>
+                    <button (click)="removeFromCart(item.id)" style="background:none;border:none;color:var(--blue);"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        </div>
+        } @empty {
+        <p style="color:var(--gray-mid);">Votre panier est vide.</p>
+        }
+    </div>
+    <div class="cart-footer">
+        <div class="cart-total"><span>Total</span> <span>{{ cartTotal }} €</span></div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;">Valider la commande</button>
+    </div>
+</div>
+
+<!-- HEADER -->
+<header>
+    <a href="#" class="logo">FOR<span>MA</span></a>
+    <div class="nav-center">
+        <a href="#shop" class="nav-link active">Boutique</a>
+        <a href="#categories" class="nav-link">Catégories</a>
+        <a href="#philosophy" class="nav-link">Philosophie</a>
+        <a href="#about" class="nav-link">Atelier</a>
+    </div>
+    <div class="nav-right">
+        <button class="search-trigger"><i class="fas fa-search"></i></button>
+        <button class="cart-trigger" (click)="toggleCart(true)">
+      <i class="fas fa-shopping-bag"></i>
+      <span class="cart-count">{{ cartCount }}</span>
+    </button>
+    </div>
+</header>
+
+<main>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge fade-up">Collection Automne · 2024</div>
+            <h1 class="hero-title fade-up delay-1">L'objet<br><em>essentiel</em></h1>
+            <p class="hero-desc fade-up delay-2">Pièces uniques façonnées à la main. Une approche radicale de la beauté utile.</p>
+            <div class="fade-up delay-3" style="display:flex;gap:1rem;">
+                <a href="#shop" class="btn btn-primary">Découvrir <i class="fas fa-arrow-right"></i></a>
+                <a href="#philosophy" class="btn btn-outline">Notre manifeste</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-img"></div>
+            <svg class="hero-obj" viewBox="0 0 180 280" fill="none">
+        <path d="M70 30Q65 20 60 15Q75 12 90 12Q105 12 120 15Q115 20 110 30" stroke="white" stroke-width="2.5" fill="none"/>
+        <path d="M60 15Q55 60 50 100Q40 160 30 200Q20 240 25 280Q45 300 90 300Q135 300 155 280Q160 240 150 200Q140 160 130 100Q125 60 120 15" stroke="white" stroke-width="2.5" fill="rgba(255,255,255,0.2)"/>
+        <path d="M50 100Q70 90 90 90Q110 90 130 100" stroke="white" stroke-width="2"/>
+      </svg>
+        </div>
+    </section>
+
+    <!-- TICKER -->
+    <div class="ticker">
+        <div class="ticker-track">
+            <span class="ticker-item">Artisanat d'art<span class="ticker-dot"></span></span>
+            <span class="ticker-item">Matières nobles<span class="ticker-dot"></span></span>
+            <span class="ticker-item">Design intemporel<span class="ticker-dot"></span></span>
+            <span class="ticker-item">Fait main en France<span class="ticker-dot"></span></span>
+            <span class="ticker-item">Éditions limitées<span class="ticker-dot"></span></span>
+            <span class="ticker-item">Livraison offerte dès 150€<span class="ticker-dot"></span></span>
+            <span class="ticker-item">Artisanat d'art<span class="ticker-dot"></span></span>
+            <span class="ticker-item">Matières nobles<span class="ticker-dot"></span></span>
+            <span class="ticker-item">Design intemporel<span class="ticker-dot"></span></span>
+        </div>
+    </div>
+
+    <!-- CATÉGORIES -->
+    <section class="section" id="categories">
+        <div class="section-header">
+            <h2 class="section-title fade-up">Nos <em>univers</em></h2>
+            <a href="#" class="btn-outline btn">Tout voir <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="categories-grid">
+            <a href="#" class="cat-card fade-up">
+                <div class="cat-icon"><i class="fas fa-wine-bottle"></i></div>
+                <h3 class="cat-name">Vases & contenants</h3>
+                <p class="cat-desc">Grès tourné, verre soufflé.</p>
+            </a>
+            <a href="#" class="cat-card fade-up delay-1">
+                <div class="cat-icon"><i class="fas fa-mug-saucer"></i></div>
+                <h3 class="cat-name">Arts de la table</h3>
+                <p class="cat-desc">Céramique, bois, linge de maison.</p>
+            </a>
+            <a href="#" class="cat-card fade-up delay-2">
+                <div class="cat-icon"><i class="fas fa-lightbulb"></i></div>
+                <h3 class="cat-name">Luminaires</h3>
+                <p class="cat-desc">Sculptures lumineuses en édition limitée.</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- PRODUITS PHARES -->
+    <section class="section" id="shop">
+        <div class="section-header">
+            <h2 class="section-title fade-up">Sélection <em>du moment</em></h2>
+            <a href="#" class="btn-outline btn">Voir la collection <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="products-grid">
+            @for (product of products; track product.id) {
+            <div class="product-card fade-up">
+                <div class="product-img">
+                    <img [src]="product.img" [alt]="product.name"> @if (product.tag) {
+                    <span class="product-tag">{{ product.tag }}</span> }
+                    <div class="product-actions">
+                        <button (click)="addToCart(product)"><i class="fas fa-shopping-bag"></i></button>
+                        <button><i class="far fa-heart"></i></button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">{{ product.name }}</h3>
+                    <p class="product-desc">{{ product.desc }}</p>
+                    <div class="product-footer">
+                        <span class="product-price">{{ product.price }} €</span>
+                        <span class="rating">
+                @for (star of getStarsArray(product.rating); track $index) {
+                  {{ star ? '★' : '☆' }}
+                }
+              </span>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </section>
+
+    <!-- PHILOSOPHIE -->
+    <section class="philosophy" id="philosophy">
+        <div class="philosophy-bg">FORMA</div>
+        <div class="philosophy-content">
+            <p class="philosophy-quote fade-up">"La beauté ne crie pas. Elle <strong>persiste</strong>, silencieuse, dans l'espace qu'elle habite."</p>
+            <p class="philosophy-author fade-up delay-1">— Manifeste Forma, 2019</p>
+        </div>
+    </section>
+
+    <!-- AVIS CLIENTS -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">Ils <em>parlent</em> de nous</h2>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card fade-up">
+                <p class="testimonial-text">"Des pièces d'une qualité rare. Le vase Aequor est devenu le centre de notre salon."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">C</div>
+                    <div>
+                        <div class="author-name">Claire D.</div>
+                        <div class="rating">★★★★★</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card fade-up delay-1">
+                <p class="testimonial-text">"Un service client remarquable et des objets qui ont une âme. Je recommande."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">M</div>
+                    <div>
+                        <div class="author-name">Marc L.</div>
+                        <div class="rating">★★★★★</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card fade-up delay-2">
+                <p class="testimonial-text">"La lampe Sphère illumine notre chambre avec une douceur incomparable."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">S</div>
+                    <div>
+                        <div class="author-name">Sophie T.</div>
+                        <div class="rating">★★★★☆</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <div class="newsletter">
+        <div>
+            <h3 class="fade-up">Recevez <em>l'inspiration</em></h3>
+            <p class="fade-up delay-1" style="color:var(--gray-mid);margin-top:1rem;">Nouveautés, histoires d'atelier et offres exclusives.</p>
+        </div>
+        <div class="newsletter-form fade-up delay-2">
+            <input type="email" placeholder="Votre adresse email" class="newsletter-input">
+            <button class="btn btn-primary">S'abonner</button>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-grid">
+        <div>
+            <div class="footer-logo">FORMA</div>
+            <p class="footer-desc">Objets d'exception façonnés main. Depuis 2019, Limoges.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-pinterest"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+            </div>
+        </div>
+        <div>
+            <div class="footer-title">Boutique</div>
+            <ul class="footer-links">
+                <li><a href="#">Vases</a></li>
+                <li><a href="#">Céramique</a></li>
+                <li><a href="#">Luminaires</a></li>
+                <li><a href="#">Textile</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="footer-title">À propos</div>
+            <ul class="footer-links">
+                <li><a href="#">Notre histoire</a></li>
+                <li><a href="#">Artisans</a></li>
+                <li><a href="#">Durabilité</a></li>
+                <li><a href="#">Presse</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="footer-title">Service</div>
+            <ul class="footer-links">
+                <li><a href="#">Livraison</a></li>
+                <li><a href="#">Retours</a></li>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="footer-title">Contact</div>
+            <ul class="footer-links">
+                <li>contact&#64;forma-studio.fr</li>
+                <li>+33 (0)5 55 12 34 56</li>
+                <li>12 rue des Arts, 87000 Limoges</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2024 Forma. Tous droits réservés.</span>
+        <span>Mentions légales · Confidentialité</span>
+    </div>
+</footer>
