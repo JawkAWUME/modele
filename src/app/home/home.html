@@ -1,253 +1,304 @@
-<!-- Curseur personnalisé -->
+<!-- Curseur -->
 <div id="cursor" class="cursor"></div>
 <div id="cursorRing" class="cursor-ring"></div>
+
+<!-- Overlay panier -->
+<div class="cart-overlay" [class.open]="cartPanelOpen" (click)="closeCart()"></div>
 
 <!-- Panier latéral -->
 <div class="cart-panel" [class.open]="cartPanelOpen">
     <div class="cart-header">
         <h3>Votre panier</h3>
-        <button (click)="toggleCart(false)" style="background:none;border:none;font-size:1.5rem;cursor:none;">&times;</button>
+        <button class="cart-close" (click)="closeCart()">✕</button>
     </div>
     <div class="cart-items">
-        <div *ngFor="let item of cart" class="cart-item">
-            <div class="cart-item-img" [style.background]="'url(' + item.img + ') center/cover'"></div>
-            <div class="cart-item-details">
-                <strong>{{ item.name }}</strong>
-                <div>{{ item.price }}€ x {{ item.quantity }}</div>
-                <div style="display:flex;gap:8px;margin-top:6px;">
-                    <button (click)="updateQuantity(item.id, -1)" style="background:var(--gray-light);border:none;padding:2px 8px;border-radius:4px;">−</button>
-                    <button (click)="updateQuantity(item.id, 1)" style="background:var(--gray-light);border:none;padding:2px 8px;border-radius:4px;">+</button>
-                    <button (click)="removeFromCart(item.id)" style="background:none;border:none;color:var(--gold);"><i class="fas fa-trash"></i></button>
+        <ng-container *ngIf="cart.length; else emptyCart">
+            <div *ngFor="let item of cart" class="cart-item">
+                <img [src]="item.img" [alt]="item.name">
+                <div class="cart-item-info">
+                    <strong>{{ item.name }}</strong>
+                    <div class="price">{{ item.price.toLocaleString('fr-FR') }} FCFA</div>
+                    <div class="cart-qty">
+                        <button (click)="updateQuantity(item.id, -1)">−</button>
+                        <span class="qty-val">{{ item.quantity }}</span>
+                        <button (click)="updateQuantity(item.id, 1)">+</button>
+                        <button class="cart-remove" (click)="removeFromCart(item.id)"><i class="fas fa-trash"></i></button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <p *ngIf="cart.length === 0" style="color:var(--gray-mid);">Votre panier est vide.</p>
+        </ng-container>
+        <ng-template #emptyCart>
+            <p class="cart-empty">Votre panier est vide.</p>
+        </ng-template>
     </div>
     <div class="cart-footer">
-        <div class="cart-total"><span>Total</span> <span>{{ cartTotal }} €</span></div>
-        <button class="btn btn-primary" style="width:100%;justify-content:center;">Valider</button>
+        <div class="cart-total"><span>Total</span><span>{{ cartTotal.toLocaleString('fr-FR') }} FCFA</span></div>
+        <button class="cart-cta" (click)="checkout()"><i class="fab fa-whatsapp"></i> Commander via WhatsApp</button>
     </div>
 </div>
 
 <!-- Header -->
-<header>
-    <a href="#" class="logo">AM<span>FRAGRANCE</span></a>
-    <div class="nav-center">
+<header id="mainHeader">
+    <a href="#" class="logo-wrap">
+        <img src="assets/products/logo.jpeg" alt="AM Fragrance" class="logo-img">
+        <span class="logo-text">AM<span>FRAGRANCE</span></span>
+    </a>
+    <nav class="nav-center">
         <a href="#shop" class="nav-link active">Parfums</a>
         <a href="#categories" class="nav-link">Collections</a>
         <a href="#philosophy" class="nav-link">Philosophie</a>
-        <a href="#about" class="nav-link">Atelier</a>
-    </div>
+        <a href="#order-info" class="nav-link">Commande</a>
+    </nav>
     <div class="nav-right">
-        <button class="search-trigger"><i class="fas fa-search"></i></button>
-        <button class="cart-trigger" (click)="toggleCart(true)">
-      <i class="fas fa-shopping-bag"></i>
-      <span class="cart-count">{{ cartCount }}</span>
+        <button class="nav-btn"><i class="fas fa-search"></i></button>
+        <button class="nav-btn" (click)="openCart()">
+      <i class="fas fa-shopping-bag"></i><span class="badge">{{ cartCount }}</span>
     </button>
     </div>
 </header>
 
-<main>
-    <!-- Hero -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge fade-up">Collection Signature · 2024</div>
-            <h1 class="hero-title fade-up delay-1">L'essence<br><em>du rare</em></h1>
-            <p class="hero-desc fade-up delay-2">Fragrances composées à la main, ingrédients d'exception. Une alchimie entre nature et élégance.</p>
-            <div class="fade-up delay-3" style="display:flex;gap:1rem;">
-                <a href="#shop" class="btn btn-primary">Découvrir <i class="fas fa-arrow-right"></i></a>
-                <a href="#philosophy" class="btn btn-outline">Notre histoire</a>
-            </div>
-        </div>
-        <div class="hero-visual">
-            <div class="hero-img"></div>
-            <svg class="hero-obj" viewBox="0 0 120 200" fill="none">
-        <rect x="30" y="60" width="60" height="100" rx="15" stroke="white" stroke-width="2.5" fill="rgba(255,255,240,0.15)"/>
-        <rect x="45" y="30" width="30" height="30" rx="8" stroke="white" stroke-width="2.5" fill="none"/>
-        <line x1="60" y1="15" x2="60" y2="30" stroke="white" stroke-width="2.5"/>
-        <circle cx="60" cy="10" r="5" fill="white" opacity="0.6"/>
-      </svg>
-        </div>
-    </section>
-
-    <!-- Ticker -->
-    <div class="ticker">
-        <div class="ticker-track">
-            <span class="ticker-item">Compositions exclusives<span class="ticker-dot"></span></span>
-            <span class="ticker-item">Matières premières nobles<span class="ticker-dot"></span></span>
-            <span class="ticker-item">Flacons rechargeables<span class="ticker-dot"></span></span>
-            <span class="ticker-item">Fait main en France<span class="ticker-dot"></span></span>
-            <span class="ticker-item">Livraison offerte dès 150€<span class="ticker-dot"></span></span>
-            <span class="ticker-item">Compositions exclusives<span class="ticker-dot"></span></span>
-            <span class="ticker-item">Matières premières nobles<span class="ticker-dot"></span></span>
-            <span class="ticker-item">Flacons rechargeables<span class="ticker-dot"></span></span>
+<!-- Hero -->
+<section class="hero">
+    <div>
+        <p class="hero-badge fade-up">Parfumerie de prestige · Dakar, Sénégal</p>
+        <h1 class="hero-title fade-up d1">L'essence<br><em>du rare</em></h1>
+        <p class="hero-desc fade-up d2">28 fragrances d'exception sélectionnées aux quatre coins du monde. Une invitation au voyage pour chaque sillage.</p>
+        <div class="hero-actions fade-up d3">
+            <a href="#shop" class="btn btn-primary">Découvrir <i class="fas fa-arrow-right"></i></a>
+            <a href="https://wa.me/221781636937" class="btn btn-wa" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
         </div>
     </div>
+    <div class="hero-right">
+        <div class="hero-blob"></div>
+        <img src="assets/products/ophylia-legend.jpeg" alt="AM Fragrance" class="hero-img">
+        <div class="hero-contact">
+            <i class="fab fa-whatsapp" style="font-size:1.1rem;"></i>
+            <span>+221 78 163 69 37</span>
+        </div>
+    </div>
+</section>
 
-    <!-- Catégories -->
-    <section class="section" id="categories">
-        <div class="section-header">
-            <h2 class="section-title fade-up">Nos <em>collections</em></h2>
-            <a href="#" class="btn-outline btn">Tout voir <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="categories-grid">
-            <a href="#" class="cat-card fade-up">
-                <div class="cat-icon"><i class="fas fa-flask"></i></div>
-                <h3 class="cat-name">Eaux de parfum</h3>
-                <p class="cat-desc">Concentrations élevées, sillage délicat.</p>
-            </a>
-            <a href="#" class="cat-card fade-up delay-1">
-                <div class="cat-icon"><i class="fas fa-leaf"></i></div>
-                <h3 class="cat-name">Végétales</h3>
-                <p class="cat-desc">Essences naturelles, extraits CO₂.</p>
-            </a>
-            <a href="#" class="cat-card fade-up delay-2">
-                <div class="cat-icon"><i class="fas fa-moon"></i></div>
-                <h3 class="cat-name">Orientales</h3>
-                <p class="cat-desc">Bois précieux, épices rares.</p>
-            </a>
-        </div>
-    </section>
+<!-- Ticker -->
+<div class="ticker">
+    <div class="ticker-track">
+        <span class="ticker-item">28 fragrances disponibles<span class="ticker-dot"></span></span>
+        <span class="ticker-item">Sélection internationale<span class="ticker-dot"></span></span>
+        <span class="ticker-item">Flacons 100% authentiques<span class="ticker-dot"></span></span>
+        <span class="ticker-item">Paiement requis avant livraison<span class="ticker-dot"></span></span>
+        <span class="ticker-item">WhatsApp : +221 78 163 69 37<span class="ticker-dot"></span></span>
+        <span class="ticker-item">28 fragrances disponibles<span class="ticker-dot"></span></span>
+        <span class="ticker-item">Sélection internationale<span class="ticker-dot"></span></span>
+        <span class="ticker-item">Flacons 100% authentiques<span class="ticker-dot"></span></span>
+        <span class="ticker-item">Paiement requis avant livraison<span class="ticker-dot"></span></span>
+        <span class="ticker-item">WhatsApp : +221 78 163 69 37<span class="ticker-dot"></span></span>
+    </div>
+</div>
 
-    <!-- Produits -->
-    <section class="section" id="shop">
-        <div class="section-header">
-            <h2 class="section-title fade-up">Sélection <em>signature</em></h2>
-            <a href="#" class="btn-outline btn">Voir la collection <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="products-grid">
-            <div *ngFor="let product of products" class="product-card fade-up">
-                <div class="product-img">
-                    <img [src]="product.img" [alt]="product.name">
-                    <span *ngIf="product.tag" class="product-tag">{{ product.tag }}</span>
-                    <div class="product-actions">
-                        <button (click)="addToCart(product)"><i class="fas fa-shopping-bag"></i></button>
-                        <button><i class="far fa-heart"></i></button>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h3 class="product-name">{{ product.name }}</h3>
-                    <p class="product-desc">{{ product.desc }}</p>
-                    <div class="product-footer">
-                        <span class="product-price">{{ product.price }} €</span>
-                        <span class="rating">
-              <ng-container *ngFor="let star of getStarsArray(product.rating); let i = index">
-                {{ star ? '★' : '☆' }}
-              </ng-container>
-            </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Philosophie -->
-    <section class="philosophy" id="philosophy">
-        <div class="philosophy-bg">AM</div>
-        <div class="philosophy-content">
-            <p class="philosophy-quote fade-up">"Un parfum doit être une <strong>caresse</strong>, pas une agression."</p>
-            <p class="philosophy-author fade-up delay-1">— Amélie Moreau, fondatrice</p>
-        </div>
-    </section>
-
-    <!-- Avis clients -->
-    <section class="section">
-        <div class="section-header">
-            <h2 class="section-title">Ils <em>parlent</em> de nous</h2>
-        </div>
-        <div class="testimonials-grid">
-            <div class="testimonial-card fade-up">
-                <p class="testimonial-text">"Une révélation. Bois d'Argent est devenu ma signature."</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar">J</div>
-                    <div>
-                        <div class="author-name">Julie M.</div>
-                        <div class="rating">★★★★★</div>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card fade-up delay-1">
-                <p class="testimonial-text">"Enfin une maison qui respecte les peaux sensibles."</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar">T</div>
-                    <div>
-                        <div class="author-name">Thomas R.</div>
-                        <div class="rating">★★★★★</div>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card fade-up delay-2">
-                <p class="testimonial-text">"Le flacon rechargeable est une excellente initiative."</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar">C</div>
-                    <div>
-                        <div class="author-name">Camille B.</div>
-                        <div class="rating">★★★★☆</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Newsletter -->
-    <div class="newsletter">
+<!-- Catégories -->
+<section class="section" id="categories" style="background:#fff;">
+    <div class="section-header">
         <div>
-            <h3 class="fade-up">L'essentiel, <em>avant tout</em></h3>
-            <p class="fade-up delay-1" style="color:var(--gray-mid);margin-top:1rem;">Nouveautés et invitations privées.</p>
+            <p class="section-label">Univers</p>
+            <h2 class="section-title fade-up">Nos <em>collections</em></h2>
         </div>
-        <div class="newsletter-form fade-up delay-2">
-            <input type="email" placeholder="Votre email" class="newsletter-input">
-            <button class="btn btn-primary">S'abonner</button>
+        <a href="#shop" class="btn btn-outline">Tout voir <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="cats-grid">
+        <a href="#" class="cat-card fade-up" (click)="filterByCategory('masculin'); $event.preventDefault()">
+            <div class="cat-icon"><i class="fas fa-male"></i></div>
+            <h3 class="cat-name">Masculins</h3>
+            <p class="cat-count">Boisés, frais, orientaux</p>
+        </a>
+        <a href="#" class="cat-card fade-up d1" (click)="filterByCategory('feminin'); $event.preventDefault()">
+            <div class="cat-icon"><i class="fas fa-female"></i></div>
+            <h3 class="cat-name">Féminins</h3>
+            <p class="cat-count">Floraux, sucrés, gourmands</p>
+        </a>
+        <a href="#" class="cat-card fade-up d2" (click)="filterByCategory('oriental'); $event.preventDefault()">
+            <div class="cat-icon"><i class="fas fa-moon"></i></div>
+            <h3 class="cat-name">Orientaux & Ouds</h3>
+            <p class="cat-count">Bois précieux, épices, résines</p>
+        </a>
+    </div>
+</section>
+
+<!-- Filtre -->
+<div class="filter-bar" id="shop">
+    <button class="filter-btn" [class.active]="selectedCategory === 'all'" (click)="filterByCategory('all')">Tous (28)</button>
+    <button class="filter-btn" [class.active]="selectedCategory === 'masculin'" (click)="filterByCategory('masculin')">Masculins</button>
+    <button class="filter-btn" [class.active]="selectedCategory === 'feminin'" (click)="filterByCategory('feminin')">Féminins</button>
+    <button class="filter-btn" [class.active]="selectedCategory === 'oriental'" (click)="filterByCategory('oriental')">Orientaux</button>
+    <button class="filter-btn" [class.active]="selectedCategory === 'mixte'" (click)="filterByCategory('mixte')">Mixtes</button>
+</div>
+
+<!-- Produits -->
+<section class="section" style="padding-top:2rem;">
+    <div class="section-header">
+        <div>
+            <p class="section-label">Notre sélection</p>
+            <h2 class="section-title fade-up">Parfums <em>signature</em></h2>
+        </div>
+        <a href="https://wa.me/221781636937" class="btn btn-wa" target="_blank"><i class="fab fa-whatsapp"></i> Commander</a>
+    </div>
+
+    <div class="products-grid">
+        <div *ngFor="let product of filteredProducts; let i = index" class="product-card fade-up" [class.d1]="i%4===1" [class.d2]="i%4===2" [class.d3]="i%4===3">
+            <div class="product-img">
+                <img [src]="product.img" [alt]="product.name">
+                <span *ngIf="product.tag" class="p-tag" [ngClass]="product.tagClass">{{ product.tag }}</span>
+                <div class="p-actions">
+                    <button (click)="addToCart(product)" title="Ajouter"><i class="fas fa-shopping-bag"></i></button>
+                    <button title="Favoris"><i class="far fa-heart"></i></button>
+                </div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-name">{{ product.name }}</h3>
+                <p class="product-sub">{{ product.sub }}</p>
+                <div class="product-footer">
+                    <span class="product-price">{{ product.price.toLocaleString('fr-FR') }} FCFA</span>
+                    <span class="stars">
+            <ng-container *ngFor="let star of getStarsArray(product.rating); let j = index">
+              {{ star ? '★' : '☆' }}
+            </ng-container>
+          </span>
+                </div>
+            </div>
         </div>
     </div>
-</main>
+</section>
+
+<!-- Philosophie -->
+<section class="philosophy" id="philosophy">
+    <div class="philo-bg">AM</div>
+    <div class="philo-inner">
+        <p class="philo-quote fade-up">"Un parfum doit être une <strong>caresse</strong>,<br>pas une agression."</p>
+        <p class="philo-author fade-up d1">— Amélie Moreau, fondatrice · AM Fragrance</p>
+    </div>
+    <div class="philo-pillars">
+        <div class="pillar fade-up">
+            <p class="pillar-num">01</p>
+            <h3 class="pillar-title">Sélection rigoureuse</h3>
+            <p class="pillar-text">Chaque flacon est soigneusement sélectionné parmi les meilleures maisons mondiales.</p>
+        </div>
+        <div class="pillar fade-up d1">
+            <p class="pillar-num">02</p>
+            <h3 class="pillar-title">Authenticité garantie</h3>
+            <p class="pillar-text">Nous ne vendons que des produits 100% authentiques. Aucun contrefait, jamais.</p>
+        </div>
+        <div class="pillar fade-up d2">
+            <p class="pillar-num">03</p>
+            <h3 class="pillar-title">Service personnalisé</h3>
+            <p class="pillar-text">Conseil sur-mesure via WhatsApp pour trouver le parfum fait pour vous.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Témoignages -->
+<section class="section testimonials" style="background:#fff;">
+    <div class="section-header">
+        <div>
+            <p class="section-label">Avis clients</p>
+            <h2 class="section-title fade-up">Ils <em>parlent</em> de nous</h2>
+        </div>
+    </div>
+    <div class="testi-grid">
+        <div class="testi-card fade-up">
+            <p class="testi-text">"Midnight Oud est un chef-d'œuvre. Le sillage dure toute la journée. AM Fragrance les yeux fermés."</p>
+            <div class="testi-author">
+                <div class="testi-av">F</div>
+                <div>
+                    <div class="testi-name">Fatou D.</div>
+                    <div class="testi-stars">★★★★★</div>
+                </div>
+            </div>
+        </div>
+        <div class="testi-card fade-up d1">
+            <p class="testi-text">"Ophylia Legend est devenu mon parfum signature. Livraison rapide, produit authentique."</p>
+            <div class="testi-author">
+                <div class="testi-av">A</div>
+                <div>
+                    <div class="testi-name">Adja S.</div>
+                    <div class="testi-stars">★★★★★</div>
+                </div>
+            </div>
+        </div>
+        <div class="testi-card fade-up d2">
+            <p class="testi-text">"Service impeccable. Le processus de commande est clair et le paiement sécurisé. Merci !"</p>
+            <div class="testi-author">
+                <div class="testi-av">M</div>
+                <div>
+                    <div class="testi-name">Moussa K.</div>
+                    <div class="testi-stars">★★★★★</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Info commande -->
+<section class="order-info" id="order-info">
+    <div class="section-header" style="margin-bottom:2rem;">
+        <div>
+            <p class="section-label">À savoir</p>
+            <h2 class="section-title fade-up">Information <em>importante</em></h2>
+        </div>
+    </div>
+    <div class="order-box fade-up">
+        <p class="order-tag">⚠ Processus de commande</p>
+        <p class="order-main">Toute commande est validée uniquement après transfert du montant d'achat</p>
+        <ul class="order-list">
+            <li>C'est à partir de cet instant qu'elle est traitée et peut prétendre à une livraison</li>
+            <li>Toute demande sans paiement au préalable ne sera plus prise en compte</li>
+            <li>Contactez-nous via WhatsApp au +221 78 163 69 37 pour finaliser votre commande</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Newsletter -->
+<section class="newsletter">
+    <div>
+        <h3 class="nl-title fade-up">L'essentiel,<br><em>avant tout le monde</em></h3>
+        <p class="nl-sub fade-up d1">Nouveautés, offres exclusives et invitations privées.<br>Aucun spam, promis.</p>
+    </div>
+    <div class="nl-form fade-up d2"><input type="text" class="nl-input" placeholder="Votre prénom"><input type="email" class="nl-input" placeholder="Votre adresse email"><button class="nl-btn">S'abonner →</button>
+        <p class="nl-legal">En vous abonnant, vous acceptez notre politique de confidentialité.</p>
+    </div>
+</section>
 
 <!-- Footer -->
 <footer>
-    <div class="footer-grid">
-        <div>
-            <div class="footer-logo">AM FRAGRANCE</div>
-            <p class="footer-desc">Parfumerie artisanale. Paris, depuis 2018.</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-pinterest"></i></a>
-            </div>
+    <div class="footer-top">
+        <div><img src="assets/products/logo.jpeg" alt="AM Fragrance" class="f-logo-img">
+            <div class="f-name">AM FRAGRANCE</div>
+            <p class="f-desc">Parfumerie de prestige.<br>Dakar, Sénégal · Depuis 2018.</p>
+            <div class="f-phone"><i class="fas fa-phone"></i> +221 78 163 69 37</div>
+            <div class="socials"><a href="https://wa.me/221781636937"><i class="fab fa-whatsapp"></i></a><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook-f"></i></a></div>
         </div>
         <div>
-            <div class="footer-title">Parfums</div>
-            <ul class="footer-links">
-                <li><a href="#">Eaux de parfum</a></li>
-                <li><a href="#">Extraits</a></li>
-                <li><a href="#">Bougies</a></li>
+            <div class="f-col-title">Collections</div>
+            <ul class="f-links">
+                <li><a href="#">Masculins</a></li>
+                <li><a href="#">Féminins</a></li>
+                <li><a href="#">Orientaux</a></li>
+                <li><a href="#">Mixtes</a></li>
             </ul>
         </div>
         <div>
-            <div class="footer-title">Maison</div>
-            <ul class="footer-links">
-                <li><a href="#">Notre atelier</a></li>
-                <li><a href="#">Ingrédients</a></li>
-                <li><a href="#">Durabilité</a></li>
+            <div class="f-col-title">Maison</div>
+            <ul class="f-links">
+                <li><a href="#philosophy">Notre histoire</a></li>
+                <li><a href="#philosophy">Philosophie</a></li>
+                <li><a href="#categories">Collections</a></li>
             </ul>
         </div>
         <div>
-            <div class="footer-title">Service</div>
-            <ul class="footer-links">
-                <li><a href="#">Livraison</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">FAQ</a></li>
-            </ul>
-        </div>
-        <div>
-            <div class="footer-title">Contact</div>
-            <ul class="footer-links">
-                <li>contact@amfragrance.fr</li>
-                <li>+33 1 42 33 56 78</li>
-                <li>7 rue des Archives, 75004 Paris</li>
+            <div class="f-col-title">Contact</div>
+            <ul class="f-links">
+                <li><a href="#order-info">Comment commander</a></li>
+                <li><a href="https://wa.me/221781636937">WhatsApp</a></li>
+                <li>+221 78 163 69 37</li>
             </ul>
         </div>
     </div>
-    <div class="footer-bottom">
-        <span>© 2024 AM FRAGRANCE</span>
-        <span>Mentions légales · Confidentialité</span>
-    </div>
+    <div class="footer-bottom"><span>© 2024 AM Fragrance · Dakar, Sénégal</span><span>Mentions légales · Confidentialité</span></div>
 </footer>
