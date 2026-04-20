@@ -1,16 +1,15 @@
-<!-- Curseur -->
+<!-- Curseur personnalisé -->
 <div id="cursor" class="cursor"></div>
 <div id="cursorRing" class="cursor-ring"></div>
 
-<!-- PANIER LATERAL -->
+<!-- Panier latéral -->
 <div class="cart-panel" [class.open]="cartPanelOpen">
     <div class="cart-header">
         <h3>Votre panier</h3>
         <button (click)="toggleCart(false)" style="background:none;border:none;font-size:1.5rem;cursor:none;">&times;</button>
     </div>
     <div class="cart-items">
-        @for (item of cart; track item.id) {
-        <div class="cart-item">
+        <div *ngFor="let item of cart" class="cart-item">
             <div class="cart-item-img" [style.background]="'url(' + item.img + ') center/cover'"></div>
             <div class="cart-item-details">
                 <strong>{{ item.name }}</strong>
@@ -18,26 +17,24 @@
                 <div style="display:flex;gap:8px;margin-top:6px;">
                     <button (click)="updateQuantity(item.id, -1)" style="background:var(--gray-light);border:none;padding:2px 8px;border-radius:4px;">−</button>
                     <button (click)="updateQuantity(item.id, 1)" style="background:var(--gray-light);border:none;padding:2px 8px;border-radius:4px;">+</button>
-                    <button (click)="removeFromCart(item.id)" style="background:none;border:none;color:var(--blue);"><i class="fas fa-trash"></i></button>
+                    <button (click)="removeFromCart(item.id)" style="background:none;border:none;color:var(--gold);"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
         </div>
-        } @empty {
-        <p style="color:var(--gray-mid);">Votre panier est vide.</p>
-        }
+        <p *ngIf="cart.length === 0" style="color:var(--gray-mid);">Votre panier est vide.</p>
     </div>
     <div class="cart-footer">
         <div class="cart-total"><span>Total</span> <span>{{ cartTotal }} €</span></div>
-        <button class="btn btn-primary" style="width:100%;justify-content:center;">Valider la commande</button>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;">Valider</button>
     </div>
 </div>
 
-<!-- HEADER -->
+<!-- Header -->
 <header>
-    <a href="#" class="logo">FOR<span>MA</span></a>
+    <a href="#" class="logo">AM<span>FRAGRANCE</span></a>
     <div class="nav-center">
-        <a href="#shop" class="nav-link active">Boutique</a>
-        <a href="#categories" class="nav-link">Catégories</a>
+        <a href="#shop" class="nav-link active">Parfums</a>
+        <a href="#categories" class="nav-link">Collections</a>
         <a href="#philosophy" class="nav-link">Philosophie</a>
         <a href="#about" class="nav-link">Atelier</a>
     </div>
@@ -51,79 +48,78 @@
 </header>
 
 <main>
-    <!-- HERO -->
+    <!-- Hero -->
     <section class="hero">
         <div class="hero-content">
-            <div class="hero-badge fade-up">Collection Automne · 2024</div>
-            <h1 class="hero-title fade-up delay-1">L'objet<br><em>essentiel</em></h1>
-            <p class="hero-desc fade-up delay-2">Pièces uniques façonnées à la main. Une approche radicale de la beauté utile.</p>
+            <div class="hero-badge fade-up">Collection Signature · 2024</div>
+            <h1 class="hero-title fade-up delay-1">L'essence<br><em>du rare</em></h1>
+            <p class="hero-desc fade-up delay-2">Fragrances composées à la main, ingrédients d'exception. Une alchimie entre nature et élégance.</p>
             <div class="fade-up delay-3" style="display:flex;gap:1rem;">
                 <a href="#shop" class="btn btn-primary">Découvrir <i class="fas fa-arrow-right"></i></a>
-                <a href="#philosophy" class="btn btn-outline">Notre manifeste</a>
+                <a href="#philosophy" class="btn btn-outline">Notre histoire</a>
             </div>
         </div>
         <div class="hero-visual">
             <div class="hero-img"></div>
-            <svg class="hero-obj" viewBox="0 0 180 280" fill="none">
-        <path d="M70 30Q65 20 60 15Q75 12 90 12Q105 12 120 15Q115 20 110 30" stroke="white" stroke-width="2.5" fill="none"/>
-        <path d="M60 15Q55 60 50 100Q40 160 30 200Q20 240 25 280Q45 300 90 300Q135 300 155 280Q160 240 150 200Q140 160 130 100Q125 60 120 15" stroke="white" stroke-width="2.5" fill="rgba(255,255,255,0.2)"/>
-        <path d="M50 100Q70 90 90 90Q110 90 130 100" stroke="white" stroke-width="2"/>
+            <svg class="hero-obj" viewBox="0 0 120 200" fill="none">
+        <rect x="30" y="60" width="60" height="100" rx="15" stroke="white" stroke-width="2.5" fill="rgba(255,255,240,0.15)"/>
+        <rect x="45" y="30" width="30" height="30" rx="8" stroke="white" stroke-width="2.5" fill="none"/>
+        <line x1="60" y1="15" x2="60" y2="30" stroke="white" stroke-width="2.5"/>
+        <circle cx="60" cy="10" r="5" fill="white" opacity="0.6"/>
       </svg>
         </div>
     </section>
 
-    <!-- TICKER -->
+    <!-- Ticker -->
     <div class="ticker">
         <div class="ticker-track">
-            <span class="ticker-item">Artisanat d'art<span class="ticker-dot"></span></span>
-            <span class="ticker-item">Matières nobles<span class="ticker-dot"></span></span>
-            <span class="ticker-item">Design intemporel<span class="ticker-dot"></span></span>
+            <span class="ticker-item">Compositions exclusives<span class="ticker-dot"></span></span>
+            <span class="ticker-item">Matières premières nobles<span class="ticker-dot"></span></span>
+            <span class="ticker-item">Flacons rechargeables<span class="ticker-dot"></span></span>
             <span class="ticker-item">Fait main en France<span class="ticker-dot"></span></span>
-            <span class="ticker-item">Éditions limitées<span class="ticker-dot"></span></span>
             <span class="ticker-item">Livraison offerte dès 150€<span class="ticker-dot"></span></span>
-            <span class="ticker-item">Artisanat d'art<span class="ticker-dot"></span></span>
-            <span class="ticker-item">Matières nobles<span class="ticker-dot"></span></span>
-            <span class="ticker-item">Design intemporel<span class="ticker-dot"></span></span>
+            <span class="ticker-item">Compositions exclusives<span class="ticker-dot"></span></span>
+            <span class="ticker-item">Matières premières nobles<span class="ticker-dot"></span></span>
+            <span class="ticker-item">Flacons rechargeables<span class="ticker-dot"></span></span>
         </div>
     </div>
 
-    <!-- CATÉGORIES -->
+    <!-- Catégories -->
     <section class="section" id="categories">
         <div class="section-header">
-            <h2 class="section-title fade-up">Nos <em>univers</em></h2>
+            <h2 class="section-title fade-up">Nos <em>collections</em></h2>
             <a href="#" class="btn-outline btn">Tout voir <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="categories-grid">
             <a href="#" class="cat-card fade-up">
-                <div class="cat-icon"><i class="fas fa-wine-bottle"></i></div>
-                <h3 class="cat-name">Vases & contenants</h3>
-                <p class="cat-desc">Grès tourné, verre soufflé.</p>
+                <div class="cat-icon"><i class="fas fa-flask"></i></div>
+                <h3 class="cat-name">Eaux de parfum</h3>
+                <p class="cat-desc">Concentrations élevées, sillage délicat.</p>
             </a>
             <a href="#" class="cat-card fade-up delay-1">
-                <div class="cat-icon"><i class="fas fa-mug-saucer"></i></div>
-                <h3 class="cat-name">Arts de la table</h3>
-                <p class="cat-desc">Céramique, bois, linge de maison.</p>
+                <div class="cat-icon"><i class="fas fa-leaf"></i></div>
+                <h3 class="cat-name">Végétales</h3>
+                <p class="cat-desc">Essences naturelles, extraits CO₂.</p>
             </a>
             <a href="#" class="cat-card fade-up delay-2">
-                <div class="cat-icon"><i class="fas fa-lightbulb"></i></div>
-                <h3 class="cat-name">Luminaires</h3>
-                <p class="cat-desc">Sculptures lumineuses en édition limitée.</p>
+                <div class="cat-icon"><i class="fas fa-moon"></i></div>
+                <h3 class="cat-name">Orientales</h3>
+                <p class="cat-desc">Bois précieux, épices rares.</p>
             </a>
         </div>
     </section>
 
-    <!-- PRODUITS PHARES -->
+    <!-- Produits -->
     <section class="section" id="shop">
         <div class="section-header">
-            <h2 class="section-title fade-up">Sélection <em>du moment</em></h2>
+            <h2 class="section-title fade-up">Sélection <em>signature</em></h2>
             <a href="#" class="btn-outline btn">Voir la collection <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="products-grid">
-            @for (product of products; track product.id) {
-            <div class="product-card fade-up">
+            <div *ngFor="let product of products" class="product-card fade-up">
                 <div class="product-img">
-                    <img [src]="product.img" [alt]="product.name"> @if (product.tag) {
-                    <span class="product-tag">{{ product.tag }}</span> }
+                    <img [src]="product.img" [alt]="product.name">
+                    <span *ngIf="product.tag" class="product-tag">{{ product.tag }}</span>
                     <div class="product-actions">
                         <button (click)="addToCart(product)"><i class="fas fa-shopping-bag"></i></button>
                         <button><i class="far fa-heart"></i></button>
@@ -135,58 +131,57 @@
                     <div class="product-footer">
                         <span class="product-price">{{ product.price }} €</span>
                         <span class="rating">
-                @for (star of getStarsArray(product.rating); track $index) {
-                  {{ star ? '★' : '☆' }}
-                }
-              </span>
+              <ng-container *ngFor="let star of getStarsArray(product.rating); let i = index">
+                {{ star ? '★' : '☆' }}
+              </ng-container>
+            </span>
                     </div>
                 </div>
             </div>
-            }
         </div>
     </section>
 
-    <!-- PHILOSOPHIE -->
+    <!-- Philosophie -->
     <section class="philosophy" id="philosophy">
-        <div class="philosophy-bg">FORMA</div>
+        <div class="philosophy-bg">AM</div>
         <div class="philosophy-content">
-            <p class="philosophy-quote fade-up">"La beauté ne crie pas. Elle <strong>persiste</strong>, silencieuse, dans l'espace qu'elle habite."</p>
-            <p class="philosophy-author fade-up delay-1">— Manifeste Forma, 2019</p>
+            <p class="philosophy-quote fade-up">"Un parfum doit être une <strong>caresse</strong>, pas une agression."</p>
+            <p class="philosophy-author fade-up delay-1">— Amélie Moreau, fondatrice</p>
         </div>
     </section>
 
-    <!-- AVIS CLIENTS -->
+    <!-- Avis clients -->
     <section class="section">
         <div class="section-header">
             <h2 class="section-title">Ils <em>parlent</em> de nous</h2>
         </div>
         <div class="testimonials-grid">
             <div class="testimonial-card fade-up">
-                <p class="testimonial-text">"Des pièces d'une qualité rare. Le vase Aequor est devenu le centre de notre salon."</p>
+                <p class="testimonial-text">"Une révélation. Bois d'Argent est devenu ma signature."</p>
                 <div class="testimonial-author">
-                    <div class="author-avatar">C</div>
+                    <div class="author-avatar">J</div>
                     <div>
-                        <div class="author-name">Claire D.</div>
+                        <div class="author-name">Julie M.</div>
                         <div class="rating">★★★★★</div>
                     </div>
                 </div>
             </div>
             <div class="testimonial-card fade-up delay-1">
-                <p class="testimonial-text">"Un service client remarquable et des objets qui ont une âme. Je recommande."</p>
+                <p class="testimonial-text">"Enfin une maison qui respecte les peaux sensibles."</p>
                 <div class="testimonial-author">
-                    <div class="author-avatar">M</div>
+                    <div class="author-avatar">T</div>
                     <div>
-                        <div class="author-name">Marc L.</div>
+                        <div class="author-name">Thomas R.</div>
                         <div class="rating">★★★★★</div>
                     </div>
                 </div>
             </div>
             <div class="testimonial-card fade-up delay-2">
-                <p class="testimonial-text">"La lampe Sphère illumine notre chambre avec une douceur incomparable."</p>
+                <p class="testimonial-text">"Le flacon rechargeable est une excellente initiative."</p>
                 <div class="testimonial-author">
-                    <div class="author-avatar">S</div>
+                    <div class="author-avatar">C</div>
                     <div>
-                        <div class="author-name">Sophie T.</div>
+                        <div class="author-name">Camille B.</div>
                         <div class="rating">★★★★☆</div>
                     </div>
                 </div>
@@ -194,68 +189,65 @@
         </div>
     </section>
 
-    <!-- NEWSLETTER -->
+    <!-- Newsletter -->
     <div class="newsletter">
         <div>
-            <h3 class="fade-up">Recevez <em>l'inspiration</em></h3>
-            <p class="fade-up delay-1" style="color:var(--gray-mid);margin-top:1rem;">Nouveautés, histoires d'atelier et offres exclusives.</p>
+            <h3 class="fade-up">L'essentiel, <em>avant tout</em></h3>
+            <p class="fade-up delay-1" style="color:var(--gray-mid);margin-top:1rem;">Nouveautés et invitations privées.</p>
         </div>
         <div class="newsletter-form fade-up delay-2">
-            <input type="email" placeholder="Votre adresse email" class="newsletter-input">
+            <input type="email" placeholder="Votre email" class="newsletter-input">
             <button class="btn btn-primary">S'abonner</button>
         </div>
     </div>
 </main>
 
+<!-- Footer -->
 <footer>
     <div class="footer-grid">
         <div>
-            <div class="footer-logo">FORMA</div>
-            <p class="footer-desc">Objets d'exception façonnés main. Depuis 2019, Limoges.</p>
+            <div class="footer-logo">AM FRAGRANCE</div>
+            <p class="footer-desc">Parfumerie artisanale. Paris, depuis 2018.</p>
             <div class="social-links">
                 <a href="#"><i class="fab fa-instagram"></i></a>
                 <a href="#"><i class="fab fa-pinterest"></i></a>
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
             </div>
         </div>
         <div>
-            <div class="footer-title">Boutique</div>
+            <div class="footer-title">Parfums</div>
             <ul class="footer-links">
-                <li><a href="#">Vases</a></li>
-                <li><a href="#">Céramique</a></li>
-                <li><a href="#">Luminaires</a></li>
-                <li><a href="#">Textile</a></li>
+                <li><a href="#">Eaux de parfum</a></li>
+                <li><a href="#">Extraits</a></li>
+                <li><a href="#">Bougies</a></li>
             </ul>
         </div>
         <div>
-            <div class="footer-title">À propos</div>
+            <div class="footer-title">Maison</div>
             <ul class="footer-links">
-                <li><a href="#">Notre histoire</a></li>
-                <li><a href="#">Artisans</a></li>
+                <li><a href="#">Notre atelier</a></li>
+                <li><a href="#">Ingrédients</a></li>
                 <li><a href="#">Durabilité</a></li>
-                <li><a href="#">Presse</a></li>
             </ul>
         </div>
         <div>
             <div class="footer-title">Service</div>
             <ul class="footer-links">
                 <li><a href="#">Livraison</a></li>
-                <li><a href="#">Retours</a></li>
-                <li><a href="#">FAQ</a></li>
                 <li><a href="#">Contact</a></li>
+                <li><a href="#">FAQ</a></li>
             </ul>
         </div>
         <div>
             <div class="footer-title">Contact</div>
             <ul class="footer-links">
-                <li>contact&#64;forma-studio.fr</li>
-                <li>+33 (0)5 55 12 34 56</li>
-                <li>12 rue des Arts, 87000 Limoges</li>
+                <li>contact@amfragrance.fr</li>
+                <li>+33 1 42 33 56 78</li>
+                <li>7 rue des Archives, 75004 Paris</li>
             </ul>
         </div>
     </div>
     <div class="footer-bottom">
-        <span>© 2024 Forma. Tous droits réservés.</span>
+        <span>© 2024 AM FRAGRANCE</span>
         <span>Mentions légales · Confidentialité</span>
     </div>
 </footer>

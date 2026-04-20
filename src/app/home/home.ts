@@ -1,8 +1,5 @@
 import { Component, AfterViewInit, OnDestroy, Renderer2, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faSearch, faShoppingBag, faArrowRight, faWineBottle, faMugSaucer, faLightbulb, faHeart as farHeart } from '@fortawesome/free-solid-svg-icons';
-// Note : si vous n'utilisez pas FontAwesome Angular, vous pouvez garder les <i> classiques avec CDN global.
 
 interface Product {
   id: number;
@@ -19,59 +16,50 @@ interface CartItem extends Product {
 }
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-am-fragrance',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
 export class HomeComponent implements AfterViewInit, OnDestroy {
-  // Icônes (optionnel si vous utilisez FontAwesome Angular)
-  faSearch = faSearch;
-  faShoppingBag = faShoppingBag;
-  faArrowRight = faArrowRight;
-  faWineBottle = faWineBottle;
-  faMugSaucer = faMugSaucer;
-  faLightbulb = faLightbulb;
-  farHeart = farHeart;
-
-  // Données mockées
+  // Produits mockés (parfums)
   products: Product[] = [
     {
       id: 1,
-      name: 'Vase Aequor',
-      desc: 'Grès tourné · Émaillage sel',
-      price: 180,
-      tag: 'Nouveau',
+      name: 'Bois d\'Argent',
+      desc: 'Iris · Ambre · Cèdre',
+      price: 165,
+      tag: 'Best-seller',
       rating: 5,
-      img: 'https://picsum.photos/400/500?random=1'
+      img: 'https://picsum.photos/400/500?random=10'
     },
     {
       id: 2,
-      name: 'Bol Bruma',
-      desc: 'Grès chamotté · Cendres de bois',
-      price: 95,
-      tag: '',
+      name: 'Fleur d\'Oranger',
+      desc: 'Néroli · Petitgrain · Musc',
+      price: 140,
+      tag: 'Nouveau',
       rating: 4,
-      img: 'https://picsum.photos/400/500?random=2'
+      img: 'https://picsum.photos/400/500?random=11'
     },
     {
       id: 3,
-      name: 'Carafe Linea',
-      desc: 'Verre soufflé · Liège naturel',
-      price: 120,
-      tag: 'Best-seller',
+      name: 'Oud Épicé',
+      desc: 'Oud · Safran · Vanille',
+      price: 220,
+      tag: '',
       rating: 5,
-      img: 'https://picsum.photos/400/500?random=3'
+      img: 'https://picsum.photos/400/500?random=12'
     },
     {
       id: 4,
-      name: 'Lampe Sphère',
-      desc: 'Céramique blanche · Lin tissé',
-      price: 245,
+      name: 'Vétiver Sauvage',
+      desc: 'Vétiver · Pamplemousse · Cuir',
+      price: 175,
       tag: '',
       rating: 5,
-      img: 'https://picsum.photos/400/500?random=4'
+      img: 'https://picsum.photos/400/500?random=13'
     }
   ];
 
@@ -94,13 +82,13 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.observer) this.observer.disconnect();
-    document.removeEventListener('mousemove', this.mouseMoveListener);
+    if (this.mouseMoveListener) document.removeEventListener('mousemove', this.mouseMoveListener);
   }
 
   private initCustomCursor(): void {
     this.cursorElement = this.el.nativeElement.querySelector('#cursor');
     this.ringElement = this.el.nativeElement.querySelector('#cursorRing');
-    
+
     this.mouseMoveListener = this.renderer.listen('document', 'mousemove', (e: MouseEvent) => {
       this.renderer.setStyle(this.cursorElement, 'left', e.clientX + 'px');
       this.renderer.setStyle(this.cursorElement, 'top', e.clientY + 'px');
@@ -175,7 +163,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     this.cartPanelOpen = open;
   }
 
-  // Helper pour générer les étoiles (rating)
+  // Helper pour générer les étoiles
   getStarsArray(rating: number): number[] {
     return Array(5).fill(0).map((_, i) => i < rating ? 1 : 0);
   }
